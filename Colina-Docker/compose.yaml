@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  web:
+    depends_on:
+      - api
+    build: ./client
+    ports:
+      - 3001:3001
+    develop:
+      watch:
+        - path: ./client/package.json
+          action: rebuild
+        - path: ./client/next.config.js
+          action: rebuild
+        - path: ./client/package-lock.json
+          action: rebuild
+        - path: ./client
+          target: /app
+          action: sync
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - SESSION_PASSWORD=c7c55dd6d529a39b5e8d214c3169bb7f7
+      - NODE_ENV=development
+
+  api:
+    depends_on:
+      db:
+        condition: service_healthy
+    build: ./api
+    ports:
+      - 3000:3000
+    environment:
+      - DB_TYPE=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=ColinaHealth_db
+      - DB_SYNCHRONIZE=true
+      - DB_LOGGING=true
+
+    develop:
+      watch:
+        - path: ./api/package.json
+          action: rebuild
+        - path: ./api/package-lock.json
+          action: rebuild
+        - path: ./api
+          target: /app
+          action: sync
+
+  db:
+    image: postgres
+    restart: always
+    container_name: postgres
+    user: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - DB_USERNAME=postgres
+      - DB_DATABASE=ColinaHealth_db
+      - DB_PASSWORD=postgres
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
