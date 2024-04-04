@@ -62,8 +62,8 @@ export class UsersService {
       where: [
         { email: ILike(`%${keyword}%`) },
         { uuid: ILike(`%${keyword}%`) },
-        { fName: ILike(`%${keyword}%`) },
-        { lName: ILike(`%${keyword}%`) },
+        { fname: ILike(`%${keyword}%`) },
+        { lname: ILike(`%${keyword}%`) },
       ],
       take: limit,
       skip: (page - 1) * limit,
@@ -99,14 +99,14 @@ export class UsersService {
   }
 
   async searchUsersByLastName(
-    lName: string,
+    lname: string,
     offset: number,
     limit: number,
   ): Promise<any> {
-    const lowercaseLname = lName.toLowerCase();
+    const lowercaseLname = lname.toLowerCase();
     return this.usersRepository.find({
       where: {
-        lName: ILike(`%${lowercaseLname}%`),
+        lname: ILike(`%${lowercaseLname}%`),
       },
       skip: offset,
       take: limit,
@@ -115,14 +115,14 @@ export class UsersService {
   }
 
   async searchUsersByFirstName(
-    fName: string,
+    fname: string,
     offset: number,
     limit: number,
   ): Promise<any> {
-    const lowercaseLname = fName.toLowerCase();
+    const lowercaseLname = fname.toLowerCase();
     return this.usersRepository.find({
       where: {
-        fName: ILike(`%${lowercaseLname}%`),
+        fname: ILike(`%${lowercaseLname}%`),
       },
       skip: offset,
       take: limit,
@@ -144,19 +144,23 @@ export class UsersService {
     if (existingUser) {
       throw new HttpException('Email already exists', HttpStatus.CONFLICT);
     }
-
+    const uuidPrefix = 'UID-'; // Customize prefix as needed
+    const uuid = this.idService.generateRandomUUID(uuidPrefix);
     const newUser = new Users();
-    newUser.uuid = this.idService.generateRandomUUID('UID-');
+    newUser.uuid = uuid;
     newUser.email = createUserInput.email;
-    newUser.fName = createUserInput.fName;
-    newUser.lName = createUserInput.lName;
+    newUser.fname = createUserInput.fname;
+    newUser.lname = createUserInput.lname;
     newUser.status = createUserInput.status;
 
     if (!createUserInput.password) {
       throw new HttpException('Password is required', HttpStatus.BAD_REQUEST);
     }
+    var passwordValue = await this.hashPassword(createUserInput.password);
 
-    newUser.password = await this.hashPassword(createUserInput.password);
+    newUser.password = passwordValue
+
+
 
     // Initially declare savedUser as null or undefined
     let savedUser: Users | null = null;
@@ -172,9 +176,12 @@ export class UsersService {
           HttpStatus.BAD_REQUEST,
         );
       }
+      console.log(uuid, 'uuid')
 
       // Save the new user to the database
       savedUser = await this.usersRepository.save(newUser);
+      console.log(uuid, 'uuid')
+
       const newUserAccessLevels = new UserAccessLevels();
       newUserAccessLevels.users = savedUser; // Assign the user to the user property
       newUserAccessLevels.roles = defaultRoles; // Assign the fetched roles to the roles property
@@ -195,6 +202,7 @@ export class UsersService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+    console.log(uuid, 'uuid')
 
     return savedUser;
   }
@@ -212,8 +220,8 @@ export class UsersService {
   //   const newUser = new Users();
   //   newUser.uuid = this.idService.generateRandomUUid('Uid-');
   //   newUser.email = createUserInput.email;
-  //   newUser.fName = createUserInput.fName;
-  //   newUser.lName = createUserInput.lName;
+  //   newUser.fname = createUserInput.fname;
+  //   newUser.lname = createUserInput.lname;
   //   newUser.status = createUserInput.status;
 
   //   if (!createUserInput.password) {
@@ -243,11 +251,11 @@ export class UsersService {
     if (updateUserInput.password !== undefined) {
       user.password = updateUserInput.password;
     }
-    if (updateUserInput.fName !== undefined) {
-      user.fName = updateUserInput.fName;
+    if (updateUserInput.fname !== undefined) {
+      user.fname = updateUserInput.fname;
     }
-    if (updateUserInput.lName !== undefined) {
-      user.lName = updateUserInput.lName;
+    if (updateUserInput.lname !== undefined) {
+      user.lname = updateUserInput.lname;
     }
     if (updateUserInput.status !== undefined) {
       user.status = updateUserInput.status;

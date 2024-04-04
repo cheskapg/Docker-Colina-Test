@@ -35,11 +35,11 @@ export class Users {
 
   @Column()
   @Field()
-  fName: string;
+  fname: string;
 
   @Column()
   @Field()
-  lName: string;
+  lname: string;
 
   @Column()
   @Field()

@@ -5,7 +5,7 @@ import {
   Get,
   Param,
   HttpStatus,
-  HttpException, 
+  HttpException,
   UsePipes,
   ValidationPipe,
   Query,
@@ -27,7 +27,7 @@ import { Public } from 'src/auth/decorators/public.decorator';
 export class UsersController {
   private readonly logger = new Logger(UsersService.name);
 
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get('search')
   async searchUsers(
@@ -71,7 +71,7 @@ export class UsersController {
 
   @Get('searchByLastName')
   async searchUsersByLastName(
-    @Query('lName') lName: string,
+    @Query('lname') lname: string,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
   ): Promise<any> {
@@ -81,7 +81,7 @@ export class UsersController {
 
       // Perform the search with pagination
       const users = await this.usersService.searchUsersByLastName(
-        lName,
+        lname,
         offset,
         limit,
       );
@@ -103,7 +103,7 @@ export class UsersController {
 
   @Get('searchByFirstName')
   async searchUsersByFirstName(
-    @Query('fName') fName: string,
+    @Query('fname') fname: string,
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
   ): Promise<any> {
@@ -113,7 +113,7 @@ export class UsersController {
 
       // Perform the search with pagination
       const users = await this.usersService.searchUsersByFirstName(
-        fName,
+        fname,
         offset,
         limit,
       );
@@ -149,8 +149,8 @@ export class UsersController {
   ): Promise<{ users: Users[]; total: number }> {
     return this.usersService.getAllUsers(page, limit);
   }
-@Public()
- @Post()
+  @Public()
+  @Post()
   @UsePipes(new ValidationPipe({ transform: true })) // Apply ValidationPipe
   async createUser(@Body() createUserInput: CreateUserInput): Promise<any> {
     // Validate email and password

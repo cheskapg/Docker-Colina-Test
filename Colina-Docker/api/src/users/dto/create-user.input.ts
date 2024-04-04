@@ -5,7 +5,7 @@ export class CreateUserInput {
   @IsEmail({}, { message: 'Invalid email format' })
   email: string;
   password: string;
-  fName: string;
-  lName: string;
+  fname: string;
+  lname: string;
   status: string;
 }
