@@ -299,7 +299,7 @@ export const DemographicModal = ({
                         }
                       >
                         <option>Select a country</option>
-                        {countryList.map((country) => (
+                        {countryList?.map((country) => (
                           <option key={country.countryId} value={country.id}>
                             {country.name}
                           </option>

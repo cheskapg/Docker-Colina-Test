@@ -5,6 +5,7 @@ services:
     depends_on:
       - api
     build: ./client
+    image: colina-web
     ports:
       - 3001:3001
     develop:
@@ -19,7 +20,7 @@ services:
           target: /app
           action: sync
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
       - SESSION_PASSWORD=c7c55dd6d529a39b5e8d214c3169bb7f7
       - NODE_ENV=development
 
