@@ -4,10 +4,15 @@ services:
   web:
     depends_on:
       - api
-    build: ./client
     image: colina-web
+    build: ./client
+    volumes:
+      - ./client:/app
+      - /app/node_modules # <-- try adding this!
+      - /app/.next 
     ports:
       - 3001:3001
+
     develop:
       watch:
         - path: ./client/package.json
@@ -23,6 +28,12 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:3000
       - SESSION_PASSWORD=c7c55dd6d529a39b5e8d214c3169bb7f7
       - NODE_ENV=development
+      - WATCHPACK_POLLING=true
+
+    networks:
+      - default
+    # command: npm run dev
+    tty: true
 
   api:
     depends_on:

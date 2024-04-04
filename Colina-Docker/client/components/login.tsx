@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 export const Login = () => {
   const router = useRouter();
-  if(getAccessToken()){
+  if (getAccessToken()) {
     onNavigate(router, "/dashboard");
   }
 
@@ -19,9 +19,6 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const [isInvalid, setIsInvalid] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  
-
-
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +49,6 @@ export const Login = () => {
 
   console.log("email", email);
 
-
   return (
     <div>
       <section>
@@ -68,7 +64,7 @@ export const Login = () => {
           <div className="flex mt-40 justify-center md:px-5 md:py-10 lg:py-32 ">
             <div className="w-[542.27px] text-left">
               <h2 className="mb-4 text-1xl font-medium md:mb-10 md:text-2xl lg:mb-10">
-                Sign in to your Account
+                BITCHESZZZZ in to your Account
               </h2>
 
               <div className="mx-auto mb-4 max-w-[800px] pb-4">
@@ -91,7 +87,11 @@ export const Login = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       required
                     />
-                    <div className={`${isInvalid? "block":"hidden"} absolute right-3 flex items-center justify-center h-full `}>
+                    <div
+                      className={`${
+                        isInvalid ? "block" : "hidden"
+                      } absolute right-3 flex items-center justify-center h-full `}
+                    >
                       <img
                         className=""
                         src="/icons/invalidIcon.svg"
@@ -114,7 +114,11 @@ export const Login = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
-                    <div className={`${isInvalid? "block":"hidden"} absolute right-3 flex items-center justify-center h-full `}>
+                    <div
+                      className={`${
+                        isInvalid ? "block" : "hidden"
+                      } absolute right-3 flex items-center justify-center h-full `}
+                    >
                       <img
                         className=""
                         src="/icons/invalidIcon.svg"
