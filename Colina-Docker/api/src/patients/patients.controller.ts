@@ -14,7 +14,7 @@ import { Patients } from './entities/patients.entity';
 
 @Controller('patient-information')
 export class PatientsController {
-  constructor(private readonly patientsService: PatientsService) {}
+  constructor(private readonly patientsService: PatientsService) { }
 
   @Post('list')
   getPatientsByTerm(
@@ -32,6 +32,7 @@ export class PatientsController {
     currentPage: number;
     totalCount;
   }> {
+    console.log('buthc');
     const { term = "", page, sortBy, sortOrder } = requestData;
     return this.patientsService.getAllPatientsBasicInfo(
       term,

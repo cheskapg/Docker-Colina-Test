@@ -9,7 +9,7 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules # <-- try adding this!
-      - /app/.next 
+      - /app/.next
     ports:
       - 3001:3001
 
@@ -23,7 +23,7 @@ services:
           action: rebuild
         - path: ./client
           target: /app
-          action: sync
+          action: sync+restart
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:3000
       - SESSION_PASSWORD=c7c55dd6d529a39b5e8d214c3169bb7f7
@@ -42,6 +42,9 @@ services:
       #   condition: service_healthy
     build: ./api
     image: api
+    volumes:
+      - ./api:/app
+      - /app/node_modules #
     ports:
       - 3000:3000
     environment:
@@ -61,7 +64,7 @@ services:
           action: rebuild
         - path: ./api
           target: /app
-          action: sync
+          action: sync+restart
 
   db:
     image: postgres:15-alpine

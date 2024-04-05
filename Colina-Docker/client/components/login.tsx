@@ -64,7 +64,7 @@ export const Login = () => {
           <div className="flex mt-40 justify-center md:px-5 md:py-10 lg:py-32 ">
             <div className="w-[542.27px] text-left">
               <h2 className="mb-4 text-1xl font-medium md:mb-10 md:text-2xl lg:mb-10">
-                BITCHESZZZZ in to your Account
+                Sign in to your Account
               </h2>
 
               <div className="mx-auto mb-4 max-w-[800px] pb-4">
